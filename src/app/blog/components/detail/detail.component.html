@@ -1,0 +1,23 @@
+<div class="container mt-4">
+    <!-- Loading Indicator -->
+    <div *ngIf="loading" class="text-center">
+      <p>Loading blog details...</p>
+      <div class="spinner-border" role="status"></div>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+      <button class="btn btn-primary mt-3" (click)="goBack()">Go Back</button>
+    </div>
+  
+    <!-- Blog Details -->
+    <div *ngIf="!loading && blog">
+      <h2>{{ blog.username }}</h2>
+      <p><strong>Created On:</strong> {{ blog.dateCreated | date:'medium' }}</p>
+      <p><strong>Content:</strong></p>
+      <p>{{ blog.text }}</p>
+      <button class="btn btn-secondary mt-3" (click)="goBack()">Back to Blog List</button>
+    </div>
+  </div>
+  

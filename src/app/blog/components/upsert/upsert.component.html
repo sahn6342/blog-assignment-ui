@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <h2 *ngIf="isEdit">Edit Blog</h2>
+    <h2 *ngIf="!isEdit">Create Blog</h2>
+  
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center">
+      <p>Loading blog details...</p>
+      <div class="spinner-border" role="status"></div>
+    </div>
+  
+    <!-- Blog Form -->
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          formControlName="username"
+          [class.is-invalid]="blogForm.get('username')?.invalid && blogForm.get('username')?.touched"
+        />
+        <div class="invalid-feedback" *ngIf="blogForm.get('username')?.invalid && blogForm.get('username')?.touched">
+          Username is required and must be at least 3 characters.
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="text" class="form-label">Blog Text</label>
+        <textarea
+          id="text"
+          class="form-control"
+          rows="5"
+          formControlName="text"
+          [class.is-invalid]="blogForm.get('text')?.invalid && blogForm.get('text')?.touched"
+        ></textarea>
+        <div class="invalid-feedback" *ngIf="blogForm.get('text')?.invalid && blogForm.get('text')?.touched">
+          Blog text is required and must be at least 10 characters.
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary" [disabled]="blogForm.invalid">
+        {{ isEdit ? 'Update Blog' : 'Create Blog' }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel</button>
+    </form>
+  </div>
+  
