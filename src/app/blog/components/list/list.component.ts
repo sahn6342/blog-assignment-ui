@@ -53,6 +53,7 @@ export class ListComponent implements OnInit {
       this.blogService.deleteBlog(blogId).subscribe({
         next: () => {
           // Filter out the deleted blog from the current list
+          alert("Blog deleted successfully.");
           this.blogs = this.blogs.filter(blog => blog.id !== blogId);
           this.filteredBlogs = [...this.blogs]; // Update filtered blogs
         },

@@ -63,15 +63,25 @@ export class UpsertComponent implements OnInit {
 
     if (this.isEdit) {
       this.blogService.updateBlog(blog).subscribe({
-        next: () => this.router.navigate(['/blogs']),
+        next: () => this.onEditSuccess(),
         error: () => (this.error = 'Failed to update the blog.')
       });
     } else {
       this.blogService.createBlog(blog).subscribe({
-        next: () => this.router.navigate(['/blogs']),
+        next: () => this.onCreateSuccess(),
         error: () => (this.error = 'Failed to create the blog.')
       });
     }
+  }
+
+  onCreateSuccess(){
+    alert("Blog created successfully.");
+    this.router.navigate(['/blogs'])
+  }
+
+  onEditSuccess(){
+    alert("Blog updated successfully.");
+    this.router.navigate(['/blogs'])
   }
 
   goBack(): void {
