@@ -1,57 +1,64 @@
-<div class="container mt-4">
-    <div class="d-flex justify-content-between mb-3">
-      <h2>Blog Posts</h2>
-      <a routerLink="/blogs/create" class="btn btn-primary">Create New Blog</a>
-    </div>
-  
-    <!-- Search Bar -->
-    <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search blogs..."
-        [(ngModel)]="searchQuery"
-        (input)="searchBlogs()"
-      />
-    </div>
-  
-    <!-- Blog List -->
-    <div *ngIf="filteredBlogs.length > 0; else noBlogs">
-      <div *ngFor="let blog of paginate()" class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">{{ blog.username }}</h5>
-          <p class="card-text">{{ blog.text | slice:0:100 }}...</p>
-          <small class="text-muted">Created on: {{ blog.dateCreated | date:'medium' }}</small>
-          <div class="mt-2">
-              <a [routerLink]="['/blogs/edit', blog.id]" class="btn btn-sm btn-warning">Edit</a>
-              <button class="btn btn-sm btn-danger" (click)="delete(blog.id)">Delete</button>
+<div class="container mt-4 border border-secondary rounded">
+  <div class="row border border-secondary rounded m-2 p-2">
+    <div class="col-12">
+      <div class="d-flex justify-content-between mb-3">
+        <a routerLink="/blogs/create" class="btn btn-primary">New</a>
+      </div>
+    
+      <!-- Search Bar -->
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search blogs..."
+          [(ngModel)]="searchQuery"
+          (input)="searchBlogs()"
+        />
+      </div>
+    
+      <!-- Blog List -->
+      <div *ngIf="filteredBlogs.length > 0; else noBlogs">
+        <div *ngFor="let blog of paginate()" class="card mb-3">
+          <div class="card-body">
+            <p class="card-text">{{ blog.text }}...</p>
+            <div class="d-flex justify-content-between">
+              <div>
+                <small class="text-muted created">Created: {{ blog.username }}</small>
+                <small class="text-muted">Created on: {{ blog.dateCreated | date:'medium' }}</small>
+              </div>
+              <div>
+                  <a [routerLink]="['/blogs/edit', blog.id]" class="btn btn-sm btn-warning">Edit</a>
+                  <button class="btn btn-sm btn-danger" (click)="delete(blog.id)">Delete</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    
+      <!-- No Blogs Template -->
+      <ng-template #noBlogs>
+        <p class="text-center">No blogs found. Try creating one!</p>
+      </ng-template>
+    
+      <!-- Pagination -->
+      <nav *ngIf="filteredBlogs.length > itemsPerPage">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+          </li>
+          <li
+            class="page-item"
+            *ngFor="let page of [].constructor(totalPages); let i = index"
+            [class.active]="currentPage === i + 1"
+          >
+            <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+          </li>
+        </ul>
+      </nav>
     </div>
-  
-    <!-- No Blogs Template -->
-    <ng-template #noBlogs>
-      <p class="text-center">No blogs found. Try creating one!</p>
-    </ng-template>
-  
-    <!-- Pagination -->
-    <nav *ngIf="filteredBlogs.length > itemsPerPage">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
-        </li>
-        <li
-          class="page-item"
-          *ngFor="let page of [].constructor(totalPages); let i = index"
-          [class.active]="currentPage === i + 1"
-        >
-          <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
-        </li>
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
-        </li>
-      </ul>
-    </nav>
+    </div>
   </div>
   
